@@ -1,24 +1,31 @@
 /* eslint-disable max-len */
 // Siga as orientações do README!
 
-const hasItemInMenu = (menuObj, item) => {
+const hasFoodItem = (menuObj, item) => {
   const foodKeys = Object.keys(menuObj.food);
-  const drinksKeys = Object.keys(menuObj.drinks);
 
-  for (let index = 0; index < foodKeys.length; index += 1) {
-    if (foodKeys[index] === item) {
-      return true;
-    }
-  }
-
-  for (let index = 0; index < drinksKeys.length; index += 1) {
-    if (drinksKeys[index] === item) {
+  for (let foodIndex = 0; foodIndex < foodKeys.length; foodIndex += 1) {
+    if (foodKeys[foodIndex] === item) {
       return true;
     }
   }
 
   return false;
 };
+
+const hasDrinksItem = (menuObj, item) => {
+  const drinksKeys = Object.keys(menuObj.drinks);
+
+  for (let drinksIndex = 0; drinksIndex < drinksKeys.length; drinksIndex += 1) {
+    if (drinksKeys[drinksIndex] === item) {
+      return true;
+    }
+  }
+
+  return false;
+};
+
+const hasItemInMenu = (menuObj, item) => hasFoodItem(menuObj, item) || hasDrinksItem(menuObj, item);
 
 const createMenu = (menuObj) => {
   const orderArray = [];
