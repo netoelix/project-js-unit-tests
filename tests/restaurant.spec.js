@@ -2,22 +2,45 @@ const createMenu = require('../src/restaurant');
 
 describe('10 - Implemente a função `createMenu`, bem como seus casos de teste', () => {
   it('Verifica se a função `createMenu` tem o comportamento esperado', () => {
-    const newMenu = createMenu({ food: {}, drinks: {}, });
+    const menuData = {
+      food: {
+        pizza: 10,
+        burger: 8,
+      },
+      drinks: {
+        coke: 2,
+        juice: 4,
+      },
+    };
 
-    //Verifica se a função createMenu() retorna um objeto que possui a chave fetchMenu.
+    const newMenu = createMenu(menuData);
+
     expect(newMenu).toHaveProperty('fetchMenu');
-
-    //Verifica se o valor da chave fetchMenu do objeto retornado pela função createMenu() é uma função.
-    expect(typeof createMenu().fetchMenu).toBe('function');
-    const menuNewObj = { food: {}, drinks: {}, };
-    const menuInstance = createMenu(menuNewObj);
-    //verifica se o objeto retornado pela função createMenu({ food: {}, drinks: {} }).fetchMenu() retorna um objeto cujas chaves são somente food e drinks.
-    expect(menuInstance.fetchMenu()).toHaveProperty('food');
-    expect(menuInstance.fetchMenu()).toHaveProperty('drinks');
+    expect(typeof newMenu.fetchMenu).toBe('function');
     
-    //Verifica se o menu passado pra função createMenu() é idêntico ao menu recuperado pela função createMenu({ food: {}, drinks: {} }).fetchMenu().
-    expect(newMenu).toEqual(newMenu);
+    const fetchedMenu = newMenu.fetchMenu();
+    expect(Object.keys(fetchedMenu)).toEqual(['food', 'drinks']);
+    
+    expect(fetchedMenu).toEqual(menuData);
 
-    expect(createMenu().consumption).toStrictEqual([]);
+    expect(newMenu.consumption).toStrictEqual([]);
+
+    const menu = createMenu(menuData);
+    const result = menu.order('pizza');
+    const resultIndisponible = menu.order('salad');
+
+    expect(result).toEqual(['pizza']);
+    expect(menu.consumption).toEqual(['pizza']);
+    expect(resultIndisponible).toBe('Item indisponível');
+
+    menu.order('pizza');
+    menu.order('burger');
+    menu.order('pizza');
+
+    expect(menu.consumption).toEqual(['pizza', 'pizza', 'burger', 'pizza']);
+
+    const totalPrice = menu.pay();
+
+    expect(totalPrice).toBeCloseTo(42, -1);
   });
 });
