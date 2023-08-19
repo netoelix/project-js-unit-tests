@@ -11,7 +11,24 @@
     - average([1, '2']) // Retorno: undefined;
 */
 
-const average = () => {
-  // adicione seu código aqui
-}
+const average = (array) => {
+  let velio = 0;
+  let fixedValue = 0;
+
+  for (let index = 0; index < array.length; index += 1) {
+    if (typeof array[index] === 'number') {
+      velio += array[index];
+    } else {
+      return undefined;
+    }
+  }
+
+  if (array.length === 0) {
+  return undefined;
+  }
+  velio /= array.length;
+  fixedValue = Math.round(velio);
+  return fixedValue;
+};
+
 module.exports = average;
